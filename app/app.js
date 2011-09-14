@@ -13,7 +13,8 @@ nv = new Ext.Application({
 
         this.listCard = new Ext.Panel({
             dockedItems: [this.listCardToolbar],
-            items: [this.listCardDataList]
+            items: [this.listCardDataList],
+            layout: 'fit'
         });
 
         this.detailCardToolbar = new Ext.Toolbar({
