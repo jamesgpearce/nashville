@@ -48,7 +48,16 @@ nv = new Ext.Application({
                 '<img class="photo" src="http://src.sencha.io/40/{photo_url}" width="40" height="40"/>' +
                 '{name}<br/>' +
                 '<img src="{rating_img_url_small}"/>&nbsp;' +
-                '<small>{address1}</small>'
+                '<small>{address1}</small>',
+            listeners: {
+                selectionchange: function (selectionModel, records) {
+                    if (records[0]) {
+                        nv.viewport.setActiveItem(nv.detailCard);
+                        nv.detailCardToolbar.setTitle(records[0].get('name'));
+                        nv.detailCard.update(records[0].data);
+                    }
+                }
+            }
         });
 
         this.listCard = new Ext.Panel({
@@ -59,11 +68,37 @@ nv = new Ext.Application({
 
         this.detailCardToolbar = new Ext.Toolbar({
             dock: 'top',
-            title: '...'
+            title: '...',
+            items: [{
+                text: 'Back',
+                ui: 'back',
+                handler: function () {
+                    nv.viewport.setActiveItem(
+                        nv.listCard,
+                        {type: 'slide', direction: 'right'}
+                    );
+                }
+            }]
         });
 
         this.detailCard = new Ext.Panel({
-            dockedItems: [this.detailCardToolbar]
+            dockedItems: [this.detailCardToolbar],
+            styleHtmlContent: true,
+            cls: 'detail',
+            tpl: [
+                '<img class="photo" src="{photo_url}" width="100" height="100"/>',
+                '<h2>{name}</h2>',
+                '<div class="info">',
+                    '{address1}<br/>',
+                    '<img src="{rating_img_url_small}"/>',
+                '</div>',
+                '<div class="phone x-button">',
+                    '<a href="tel:{phone}">{phone}</a>',
+                '</div>',
+                '<div class="link x-button">',
+                    '<a href="{mobile_url}">Read more</a>',
+                '</div>'
+            ]
         });
 
         nv.viewport = new Ext.Panel({
