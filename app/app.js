@@ -43,8 +43,12 @@ nv = new Ext.Application({
         });
 
         this.listCardDataList = new Ext.List({
-            store: null,
-            itemTpl: ''
+            store: this.data.restaurants,
+            itemTpl:
+                '<img class="photo" src="http://src.sencha.io/40/{photo_url}" width="40" height="40"/>' +
+                '{name}<br/>' +
+                '<img src="{rating_img_url_small}"/>&nbsp;' +
+                '<small>{address1}</small>'
         });
 
         this.listCard = new Ext.Panel({
