@@ -1,10 +1,10 @@
 nv = new Ext.Application({
 
     launch: function() {
-        new Ext.Panel({
-            layout    : 'card',
-            fullscreen: true,
+        this.viewport = new Ext.Panel({
 
+            layout: 'card',
+            fullscreen: true,
             html: "Hello world!"
 
         });
