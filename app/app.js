@@ -20,30 +20,31 @@ nv = new Ext.Application({
             ]
         });
 
-        this.data.restaurants = new Ext.data.Store({
-            model: this.data.Business,
-            autoLoad: true,
-            proxy: {
-                type: 'scripttag',
-                url: 'http://api.yelp.com/business_review_search' +
-                    '?ywsid=' + YELP_KEY +
-                    '&term=Restaurant' +
-                    '&location=Nashville,TN',
-                reader: {
-                    type: 'json',
-                    root: 'businesses'
-                }
-            }
-        });
-
-
         this.listCardToolbar = new Ext.Toolbar({
             dock: 'top',
             title: 'Nashville Guide'
         });
 
-        this.listCardDataList = new Ext.List({
-            store: this.data.restaurants,
+        ['hotels', 'bars', 'restaurants'].forEach( function (type) {
+            nv.data[type] = new Ext.data.Store({
+                model: nv.data.Business,
+                autoLoad: true,
+                proxy: {
+                    type: 'scripttag',
+                    url: 'http://api.yelp.com/business_review_search' +
+                        '?ywsid=' + YELP_KEY +
+                        '&term=' + type +
+                        '&location=Nashville,TN',
+                    reader: {
+                        type: 'json',
+                        root: 'businesses'
+                    }
+                }
+            });
+        });
+
+        this.ListCardDataList = Ext.extend(Ext.List, {
+            store: null,
             itemTpl:
                 '<img class="photo" src="http://src.sencha.io/40/{photo_url}" width="40" height="40"/>' +
                 '{name}<br/>' +
@@ -73,12 +74,38 @@ nv = new Ext.Application({
 
                     }
                 }
-            }
+            },
+            plugins: [{
+                ptype: 'pullrefresh'
+            }]
         });
 
-        this.listCard = new Ext.Panel({
+
+        this.stayCardDataList = new this.ListCardDataList({
+            store: this.data.hotels,
+            title: 'Stay',
+            iconCls: 'home'
+        });
+        this.eatCardDataList = new this.ListCardDataList({
+            store: this.data.restaurants,
+            title: 'Eat',
+            iconCls: 'locate'
+        });
+        this.drinkCardDataList = new this.ListCardDataList({
+            store: this.data.bars,
+            title: 'Drink',
+            iconCls: 'star'
+        });
+
+        this.listCard = new Ext.TabPanel({
+            items: [this.stayCardDataList, this.eatCardDataList, this.drinkCardDataList],
+            tabBar: {
+                ui: 'light',
+                layout: { pack: 'center' },
+                dock: 'bottom'
+            },
+            cardSwitchAnimation: 'flip',
             dockedItems: [this.listCardToolbar],
-            items: [this.listCardDataList],
             layout: 'fit'
         });
 
