@@ -1,0 +1,46 @@
+@import url(http://fonts.googleapis.com/css?family=Smokum);
+
+$base-color: #849;
+$include-default-icons: false;
+
+@import 'sencha-touch/default/all';
+
+@include sencha-panel;
+@include sencha-buttons;
+@include sencha-sheet;
+@include sencha-tabs;
+@include sencha-toolbar;
+@include sencha-list;
+@include sencha-list-pullrefresh;
+@include sencha-layout;
+@include sencha-loading-spinner;
+
+@include pictos-iconmask('briefcase1');
+@include pictos-iconmask('heart');
+@include pictos-iconmask('music1');
+
+.photo {
+    float:left;
+    margin:0 8px 16px 0;
+    border:1px solid #ccc;
+    -webkit-box-shadow:
+        0 2px 4px #777;
+}
+.x-html h2 {
+    margin-bottom:0;
+}
+.phone, .link {
+    clear:both;
+    font-weight:bold;
+    display:block;
+    text-align:center;
+    margin-top:8px;
+}
+
+.x-toolbar-title {
+  font-family: Smokum;
+  font-weight: normal;
+  font-size: 1.7em;
+  line-height: 1.7em;
+  letter-spacing: 0.05em;
+}

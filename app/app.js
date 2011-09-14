@@ -84,17 +84,17 @@ nv = new Ext.Application({
         this.stayCardDataList = new this.ListCardDataList({
             store: this.data.hotels,
             title: 'Stay',
-            iconCls: 'home'
+            iconCls: 'briefcase1'
         });
         this.eatCardDataList = new this.ListCardDataList({
             store: this.data.restaurants,
             title: 'Eat',
-            iconCls: 'locate'
+            iconCls: 'heart'
         });
         this.drinkCardDataList = new this.ListCardDataList({
             store: this.data.bars,
             title: 'Drink',
-            iconCls: 'star'
+            iconCls: 'music1'
         });
 
         this.listCard = new Ext.TabPanel({
