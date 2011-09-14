@@ -52,9 +52,25 @@ nv = new Ext.Application({
             listeners: {
                 selectionchange: function (selectionModel, records) {
                     if (records[0]) {
-                        nv.viewport.setActiveItem(nv.detailCard);
+                        nv.viewport.setActiveItem(nv.detailTabs);
                         nv.detailCardToolbar.setTitle(records[0].get('name'));
                         nv.detailCard.update(records[0].data);
+
+                        var map = nv.detailMap.map;
+                        if (!map.marker) {
+                            map.marker = new google.maps.Marker();
+                            map.marker.setMap(map);
+                        }
+                        map.setCenter(
+                            new google.maps.LatLng(
+                                records[0].get('latitude'),
+                                records[0].get('longitude')
+                            )
+                        );
+                        map.marker.setPosition(
+                            map.getCenter()
+                        );
+
                     }
                 }
             }
@@ -82,7 +98,6 @@ nv = new Ext.Application({
         });
 
         this.detailCard = new Ext.Panel({
-            dockedItems: [this.detailCardToolbar],
             styleHtmlContent: true,
             cls: 'detail',
             tpl: [
@@ -98,14 +113,28 @@ nv = new Ext.Application({
                 '<div class="link x-button">',
                     '<a href="{mobile_url}">Read more</a>',
                 '</div>'
-            ]
+            ],
+            title: 'Info'
+        });
+
+        this.detailMap = new Ext.Map({
+            title: 'Map'
+        });
+
+        this.detailTabs = new Ext.TabPanel({
+            dockedItems: [this.detailCardToolbar],
+            items: [this.detailCard, this.detailMap],
+            tabBar: {
+                ui: 'light',
+                layout: { pack: 'center' }
+            }
         });
 
         nv.viewport = new Ext.Panel({
             layout: 'card',
             fullscreen: true,
             cardSwitchAnimation: 'slide',
-            items: [this.listCard, this.detailCard]
+            items: [this.listCard, this.detailTabs]
         });
     }
 });
